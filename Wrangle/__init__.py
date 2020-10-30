@@ -17,6 +17,9 @@ class Mesh:
     normals = []
     faces = []
 
+    def __init__(self):
+        return self
+    
     # Returns list of each face's averaged normals
     def get_face_normals(self):
         # Initialize normal list
@@ -57,6 +60,20 @@ class Mesh:
         # Return final list of each face's vertices
         return vertices
 
+class SceneObject:
+    type = None
+    name = ""
+    data = None
+    
+    def __init__(self):
+        return self
+    
+class Scene:
+    sceneObjects = []
+    
+    def __init__(self):
+        return self
+    
 # Open mesh from file
 def open_mesh(filename):
     # Open file for reading and split lines into a list
@@ -107,7 +124,7 @@ def open_mesh(filename):
     return mesh
 
 # Save mesh to file
-def save_mesh(mesh, filename, filetype="obj"):
+def save_mesh(mesh, filename, filetype="obj", name="Mesh"):
     # Open file for writing
     f = open(filename, "w")
 
@@ -143,7 +160,7 @@ def save_mesh(mesh, filename, filetype="obj"):
     elif(filetype=="stl_ascii"):
         # Initialize output buffer and start STL solid section
         lines = []
-        lines.append("solid "+Path(filename).stem+"\n")
+        lines.append("solid"+name+"\n")
 
         # Get face normals for facets
         face_normals = mesh.get_face_normals()
@@ -161,7 +178,7 @@ def save_mesh(mesh, filename, filetype="obj"):
             lines += "\tendfacet\n"
 
         # End STL solid section and write lines
-        lines.append("endsolid "+Path(filename).stem+"\n")
+        lines.append("endsolid "+name+"\n")
         f.writelines(lines)
 
     # Close file
